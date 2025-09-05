@@ -5,8 +5,10 @@ const srcDir = fileURLToPath(new URL('./src', import.meta.url));
 
 export default defineConfig({
   test: {
-    environment: 'node',
-    include: ['tests/**/*.{test,spec}.ts']
+    environment: 'jsdom',
+    include: ['tests/**/*.{test,spec}.{ts,tsx}'],
+    setupFiles: ['tests/setup.ts'],
+    globals: true
   },
   resolve: {
     alias: {

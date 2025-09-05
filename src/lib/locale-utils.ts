@@ -45,7 +45,9 @@ export function createUrlWithLocale(baseUrl: string, locale: SupportedLanguage, 
   
   if (!preserveParams) {
     // Clear existing params if not preserving
-    url.search = '';
+    url.searchParams.forEach((_, key) => {
+      url.searchParams.delete(key);
+    });
   }
   
   url.searchParams.set('lang', locale);
