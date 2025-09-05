@@ -70,6 +70,7 @@ export function HistoryPanel({
     onDeletePreferenceDialogChange
 }: HistoryPanelProps) {
     const { t } = useTranslation('historyPanel');
+    const { t: tGeneration } = useTranslation('generationForm');
     const [openPromptDialogTimestamp, setOpenPromptDialogTimestamp] = React.useState<number | null>(null);
     const [openCostDialogTimestamp, setOpenCostDialogTimestamp] = React.useState<number | null>(null);
     const [isTotalCostDialogOpen, setIsTotalCostDialogOpen] = React.useState(false);
@@ -89,6 +90,19 @@ export function HistoryPanel({
     }, [history]);
 
     const averageCost = totalImages > 0 ? totalCost / totalImages : 0;
+
+    // Helper functions to translate values using the same translations as generation form
+    const translateQuality = (quality: string) => {
+        return tGeneration(`form.quality.options.${quality}`, quality);
+    };
+
+    const translateBackground = (background: string) => {
+        return tGeneration(`form.background.options.${background}`, background);
+    };
+
+    const translateModeration = (moderation: string) => {
+        return tGeneration(`form.moderation.options.${moderation}`, moderation);
+    };
 
     const handleCopy = async (text: string | null | undefined, timestamp: number) => {
         if (!text) return;
@@ -388,13 +402,13 @@ export function HistoryPanel({
                                             {formatDuration(item.durationMs)}
                                         </p>
                                         <p>
-                                            <span className='font-medium text-white/80'>{t('quality')}:</span> {item.quality}
+                                            <span className='font-medium text-white/80'>{t('quality')}:</span> {translateQuality(item.quality)}
                                         </p>
                                         <p>
-                                            <span className='font-medium text-white/80'>{t('background')}:</span> {item.background}
+                                            <span className='font-medium text-white/80'>{t('background')}:</span> {translateBackground(item.background)}
                                         </p>
                                         <p>
-                                            <span className='font-medium text-white/80'>{t('moderation')}:</span> {item.moderation}
+                                            <span className='font-medium text-white/80'>{t('moderation')}:</span> {translateModeration(item.moderation)}
                                         </p>
                                         <div className='mt-2 flex items-center gap-1'>
                                             <Dialog
