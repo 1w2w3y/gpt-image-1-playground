@@ -1,11 +1,18 @@
 # Active Context: GPT-IMAGE-1 Playground
 
 ## Current Work Focus
-**COMPLETED: Phase 2 API Route Testing Implementation**
+**COMPLETED: Image Edit API Multipart Boundary Parsing Fix**
 
-Successfully implemented comprehensive API route testing achieving 111/111 tests passing (100% success rate).
+Successfully identified and fixed the root cause of 422 "Skipping data after last boundary" errors in the image editing functionality. Fixed the multipart form data parsing issue that was causing LiteLLM to reject requests before they reached Azure OpenAI.
 
 ## Recent Changes
+- **Image Edit API Bug Fix - COMPLETED ✅**
+  - **Problem**: 422 errors with "Skipping data after last boundary" in LiteLLM logs
+  - **Root Cause**: OpenAI's image edit API expects a single `image` parameter (File), but code was passing an array of Files
+  - **Solution**: Modified API route to use only the first/primary image file for editing requests
+  - **Technical Fix**: Changed `image: imageFiles` to `image: primaryImage` in `src/app/api/images/route.ts`
+  - **Verification**: All 111 tests still pass, maintaining 100% test success rate
+
 - **Phase 2: API Route Testing - COMPLETED ✅**
   - Created comprehensive API testing framework with 46 API tests across 4 files
   - Implemented advanced module mocking patterns with vi.hoisted() and vi.mock()

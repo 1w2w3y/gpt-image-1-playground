@@ -160,10 +160,15 @@ export async function POST(request: NextRequest) {
 
             const maskFile = formData.get('mask') as File | null;
 
+            // OpenAI's image edit API expects a single image file, not an array
+            // If multiple images are provided, we'll use the first one for now
+            // This aligns with the current UI behavior where users edit one image at a time
+            const primaryImage = imageFiles[0];
+
             const params: OpenAI.Images.ImageEditParams = {
                 model,
                 prompt,
-                image: imageFiles,
+                image: primaryImage,
                 n: Math.max(1, Math.min(n || 1, 10)),
                 size: size === 'auto' ? undefined : size,
                 quality: quality === 'auto' ? undefined : quality
@@ -175,7 +180,7 @@ export async function POST(request: NextRequest) {
 
             console.log('Calling OpenAI edit with params:', {
                 ...params,
-                image: `[${imageFiles.map((f) => f.name).join(', ')}]`,
+                image: primaryImage.name,
                 mask: maskFile ? maskFile.name : 'N/A'
             });
             result = await openai.images.edit(params);
