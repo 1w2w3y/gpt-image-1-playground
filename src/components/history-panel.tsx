@@ -391,10 +391,10 @@ export function HistoryPanel({
                                             <span className='font-medium text-white/80'>{t('quality')}:</span> {item.quality}
                                         </p>
                                         <p>
-                                            <span className='font-medium text-white/80'>BG:</span> {item.background}
+                                            <span className='font-medium text-white/80'>{t('background')}:</span> {item.background}
                                         </p>
                                         <p>
-                                            <span className='font-medium text-white/80'>Mod:</span> {item.moderation}
+                                            <span className='font-medium text-white/80'>{t('moderation')}:</span> {item.moderation}
                                         </p>
                                         <div className='mt-2 flex items-center gap-1'>
                                             <Dialog
