@@ -7,7 +7,8 @@
     "showPrompt": "Show Prompt",
     "showCostBreakdown": "Show cost breakdown",
     "showTotalCost": "Show total cost summary",
-    "delete": "Delete history item"
+    "delete": "Delete history item",
+    "downloadImages": "Download images from this batch"
   },
   "totalCost": "Total Cost: ${{cost}}",
   "metadata": {

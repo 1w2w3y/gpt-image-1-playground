@@ -7,7 +7,8 @@
     "showPrompt": "显示提示词",
     "showCostBreakdown": "显示成本明细",
     "showTotalCost": "显示总成本摘要",
-    "delete": "删除历史记录项"
+    "delete": "删除历史记录项",
+    "downloadImages": "下载此批次中的图像"
   },
   "totalCost": "总成本: ${{cost}}",
   "metadata": {

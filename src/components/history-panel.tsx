@@ -25,7 +25,8 @@ import {
     HardDrive,
     Database,
     FileImage,
-    Trash2
+    Trash2,
+    Download
 } from 'lucide-react';
 import Image from 'next/image';
 import * as React from 'react';
@@ -97,6 +98,45 @@ export function HistoryPanel({
             setTimeout(() => setCopiedTimestamp(null), 1500);
         } catch (err) {
             console.error('Failed to copy text: ', err);
+        }
+    };
+
+    const handleDownloadImages = async (item: HistoryMetadata) => {
+        if (!item.images || item.images.length === 0) return;
+        
+        for (const image of item.images) {
+            try {
+                let imageSrc: string;
+                
+                // Get the correct image source based on storage mode
+                if (item.storageModeUsed === 'indexeddb') {
+                    imageSrc = getImageSrc(image.filename) || '';
+                } else {
+                    imageSrc = `/api/image/${image.filename}`;
+                }
+                
+                if (!imageSrc) continue;
+                
+                const response = await fetch(imageSrc);
+                const blob = await response.blob();
+                
+                // Create download link
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = image.filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // Small delay between downloads to prevent browser blocking
+                if (item.images.length > 1) {
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+            } catch (error) {
+                console.error('Failed to download image:', image.filename, error);
+            }
         }
     };
 
@@ -406,6 +446,15 @@ export function HistoryPanel({
                                                     </DialogFooter>
                                                 </DialogContent>
                                             </Dialog>
+                                            <Button
+                                                className='h-6 w-6 bg-blue-600/60 text-white hover:bg-blue-500/60'
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleDownloadImages(item);
+                                                }}
+                                                aria-label={t('downloadImages')}>
+                                                <Download size={14} />
+                                            </Button>
                                             <Dialog
                                                 open={itemPendingDeleteConfirmation?.timestamp === item.timestamp}
                                                 onOpenChange={(isOpen) => {

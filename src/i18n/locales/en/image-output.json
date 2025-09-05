@@ -14,6 +14,8 @@
   "buttons": {
     "showGridView": "Show grid view",
     "selectImage": "Select image {{index}}",
-    "sendToEdit": "Send to Edit"
+    "sendToEdit": "Send to Edit",
+    "download": "Download",
+    "downloadAll": "Download All"
   }
 }

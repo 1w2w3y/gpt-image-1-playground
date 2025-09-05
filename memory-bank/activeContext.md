@@ -1,12 +1,30 @@
 # Active Context: GPT-IMAGE-1 Playground
 
 ## Current Work Focus
-Testing the application with Playwright MCP to identify and fix any issues. Most recently fixed a missing translation key issue in the history panel component.
+Added comprehensive download functionality for generated images in both the main image output and history panel components.
 
 ## Recent Changes
-- Fixed missing translation key `emptyMessage` in both English and Chinese translation files for history panel
-- Added the missing key to `src/i18n/locales/en/history-panel.json` and `src/i18n/locales/zh/history-panel.json`
-- Verified application functionality using Playwright MCP browser automation
+- **Added Download Functionality to ImageOutput Component:**
+  - Implemented `handleDownloadClick()` for single image downloads
+  - Implemented `handleDownloadAllClick()` for batch downloads in grid view
+  - Added conditional download buttons that appear based on view mode
+  - Support for both filesystem and IndexedDB storage modes
+
+- **Added Download Functionality to HistoryPanel Component:**
+  - Implemented `handleDownloadImages()` for downloading all images from a history batch
+  - Added blue download button alongside existing prompt and delete buttons
+  - Proper error handling and sequential downloads with delays
+
+- **Added Translation Support:**
+  - English: Added "download", "downloadAll", "downloadImages" keys
+  - Chinese: Added corresponding translations for download functionality
+  - Updated both `image-output.json` and `history-panel.json` translation files
+
+- **UI Integration:**
+  - Download buttons use consistent styling with existing UI
+  - Proper disabled states and visibility logic
+  - Download icon from Lucide React library
+  - Accessibility labels and proper ARIA attributes
 
 ## Next Steps
 1. Continue monitoring for any other UI/UX issues

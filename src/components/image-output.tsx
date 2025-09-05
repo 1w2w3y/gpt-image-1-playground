@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Loader2, Send, Grid } from 'lucide-react';
+import { Loader2, Send, Grid, Download } from 'lucide-react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
@@ -45,6 +45,56 @@ export function ImageOutput({
         // Send to edit only works when a single image is selected
         if (typeof viewMode === 'number' && imageBatch && imageBatch[viewMode]) {
             onSendToEdit(imageBatch[viewMode].filename);
+        }
+    };
+
+    const handleDownloadClick = async () => {
+        // Download only works when a single image is selected
+        if (typeof viewMode === 'number' && imageBatch && imageBatch[viewMode]) {
+            const img = imageBatch[viewMode];
+            try {
+                const response = await fetch(img.path);
+                const blob = await response.blob();
+                
+                // Create download link
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = img.filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Failed to download image:', error);
+            }
+        }
+    };
+
+    const handleDownloadAllClick = async () => {
+        // Download all images in grid view
+        if (imageBatch && viewMode === 'grid') {
+            for (const img of imageBatch) {
+                try {
+                    const response = await fetch(img.path);
+                    const blob = await response.blob();
+                    
+                    // Create download link
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = img.filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    // Small delay between downloads to prevent browser blocking
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                } catch (error) {
+                    console.error('Failed to download image:', img.filename, error);
+                }
+            }
         }
     };
 
@@ -157,6 +207,35 @@ export function ImageOutput({
                             </Button>
                         ))}
                     </div>
+                )}
+
+                {/* Download buttons */}
+                {imageBatch && imageBatch.length > 0 && !isLoading && (
+                    <>
+                        {viewMode === 'grid' && imageBatch.length > 1 ? (
+                            <Button
+                                variant='outline'
+                                size='sm'
+                                onClick={handleDownloadAllClick}
+                                className='shrink-0 border-white/20 text-white/80 hover:bg-white/10 hover:text-white'>
+                                <Download className='mr-2 h-4 w-4' />
+                                {t('buttons.downloadAll')}
+                            </Button>
+                        ) : (
+                            <Button
+                                variant='outline'
+                                size='sm'
+                                onClick={handleDownloadClick}
+                                disabled={!isSingleImageView}
+                                className={cn(
+                                    'shrink-0 border-white/20 text-white/80 hover:bg-white/10 hover:text-white disabled:pointer-events-none disabled:opacity-50',
+                                    showCarousel && viewMode === 'grid' ? 'invisible' : 'visible'
+                                )}>
+                                <Download className='mr-2 h-4 w-4' />
+                                {t('buttons.download')}
+                            </Button>
+                        )}
+                    </>
                 )}
 
                 <Button
