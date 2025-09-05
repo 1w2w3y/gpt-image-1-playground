@@ -10,7 +10,7 @@
     "delete": "Delete history item",
     "downloadImages": "Download images from this batch"
   },
-  "totalCost": "Total Cost: ${{cost}}",
+  "totalCost": "Total Cost",
   "metadata": {
     "time": "Time:",
     "quality": "Quality:",

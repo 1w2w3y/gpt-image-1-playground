@@ -10,7 +10,7 @@
     "delete": "删除历史记录项",
     "downloadImages": "下载此批次中的图像"
   },
-  "totalCost": "总成本: ${{cost}}",
+  "totalCost": "总成本",
   "metadata": {
     "time": "时间:",
     "quality": "质量:",
