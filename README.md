@@ -155,7 +155,7 @@ npm run dev
 
 ### 4. Open the Playground 🟢
 
-Open [http://localhost:3000](http://localhost:3000) in your web browser. You should now be able to use the gpt-image-1 Playground!
+Open [http://localhost:3366](http://localhost:3366) in your web browser. You should now be able to use the gpt-image-1 Playground!
 
 ## 🐳 Docker Deployment
 
@@ -172,14 +172,14 @@ You can run this application using Docker for easy deployment and consistent env
    ```bash
    docker run -d \
      --name gpt-image-playground \
-     -p 3000:3000 \
+     -p 3366:3366 \
      -e OPENAI_API_KEY=your_openai_api_key_here \
      -e OPENAI_API_BASE_URL=https://api.openai.com/v1 \
      nextjs-gpt-image-playground
    ```
 
 3. **Access the application:**
-   Open [http://localhost:3000](http://localhost:3000) in your web browser.
+   Open [http://localhost:3366](http://localhost:3366) in your web browser.
 
 ### Docker Features
 

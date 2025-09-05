@@ -3,13 +3,12 @@
 import { Button } from '@/components/ui/button';
 import { Languages } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { createUrlWithLocale, type SupportedLanguage } from '@/lib/locale-utils';
+import { useRouter } from 'next/navigation';
+import { type SupportedLanguage } from '@/lib/locale-utils';
 
 export function LanguageSwitcher() {
     const { i18n, t } = useTranslation('common');
     const router = useRouter();
-    const searchParams = useSearchParams();
 
     const toggleLanguage = () => {
         const newLang: SupportedLanguage = i18n.language === 'en' ? 'zh' : 'en';
@@ -19,7 +18,7 @@ export function LanguageSwitcher() {
         
         // Update URL with new language parameter
         const currentPath = window.location.pathname;
-        const currentParams = new URLSearchParams(searchParams.toString());
+        const currentParams = new URLSearchParams(window.location.search);
         currentParams.set('lang', newLang);
         
         const newUrl = `${currentPath}?${currentParams.toString()}`;
