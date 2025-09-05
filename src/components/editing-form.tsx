@@ -689,7 +689,7 @@ export function EditingForm({
                             value={editSize}
                             onValueChange={(value) => setEditSize(value as EditingFormData['size'])}
                             disabled={isLoading}
-                            className='flex flex-wrap gap-x-5 gap-y-3'>
+                            className='flex flex-col gap-y-3'>
                             <RadioItemWithIcon value='auto' id='edit-size-auto' label={t('form.size.options.auto')} Icon={Sparkles} />
                             <RadioItemWithIcon value='1024x1024' id='edit-size-square' label={t('form.size.options.square')} Icon={Square} />
                             <RadioItemWithIcon

@@ -195,7 +195,7 @@ export function GenerationForm({
                             value={size}
                             onValueChange={(value) => setSize(value as GenerationFormData['size'])}
                             disabled={isLoading}
-                            className='flex flex-wrap gap-x-5 gap-y-3'>
+                            className='flex flex-col gap-y-3'>
                             <RadioItemWithIcon value='auto' id='size-auto' label={t('form.size.options.auto')} Icon={Sparkles} />
                             <RadioItemWithIcon value='1024x1024' id='size-square' label={t('form.size.options.square')} Icon={Square} />
                             <RadioItemWithIcon

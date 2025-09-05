@@ -13,9 +13,9 @@
       "label": "尺寸",
       "options": {
         "auto": "自动",
-        "square": "正方形",
-        "landscape": "横向",
-        "portrait": "纵向"
+        "square": "1024×1024 (正方形)",
+        "landscape": "1536×1024 (横向)",
+        "portrait": "1024×1536 (纵向)"
       }
     },
     "quality": {

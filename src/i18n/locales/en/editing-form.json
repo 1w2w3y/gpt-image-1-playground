@@ -37,9 +37,9 @@
       "label": "Size",
       "options": {
         "auto": "Auto",
-        "square": "Square",
-        "landscape": "Landscape",
-        "portrait": "Portrait"
+        "square": "1024×1024 (Square)",
+        "landscape": "1536×1024 (Landscape)",
+        "portrait": "1024×1536 (Portrait)"
       }
     },
     "quality": {
