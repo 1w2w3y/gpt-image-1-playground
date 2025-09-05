@@ -108,7 +108,7 @@ export default function HomePage() {
     const [genOutputFormat, setGenOutputFormat] = React.useState<GenerationFormData['output_format']>('png');
     const [genCompression, setGenCompression] = React.useState([100]);
     const [genBackground, setGenBackground] = React.useState<GenerationFormData['background']>('auto');
-    const [genModeration, setGenModeration] = React.useState<GenerationFormData['moderation']>('auto');
+    const [genModeration, setGenModeration] = React.useState<GenerationFormData['moderation']>('low');
 
     const getImageSrc = React.useCallback(
         (filename: string): string | undefined => {
