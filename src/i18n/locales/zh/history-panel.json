@@ -1,6 +1,7 @@
 {
   "title": "历史记录",
   "empty": "生成的图像将出现在这里。",
+  "emptyMessage": "生成的图像将出现在这里。",
   "buttons": {
     "clear": "清除",
     "showPrompt": "显示提示词",

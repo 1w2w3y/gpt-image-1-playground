@@ -1,6 +1,7 @@
 {
   "title": "History",
   "empty": "Generated images will appear here.",
+  "emptyMessage": "Generated images will appear here.",
   "buttons": {
     "clear": "Clear",
     "showPrompt": "Show Prompt",

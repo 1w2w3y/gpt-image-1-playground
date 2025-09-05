@@ -1,19 +1,18 @@
 # Active Context: GPT-IMAGE-1 Playground
 
 ## Current Work Focus
-Initial memory bank setup and documentation creation for the GPT-IMAGE-1 Playground project. The project is a fully functional Next.js application that interfaces with OpenAI's image generation API.
+Testing the application with Playwright MCP to identify and fix any issues. Most recently fixed a missing translation key issue in the history panel component.
 
 ## Recent Changes
-- Created memory bank directory structure
-- Established project brief documenting core requirements
-- Defined product context with user workflows and UX goals
-- Currently documenting the technical architecture and implementation patterns
+- Fixed missing translation key `emptyMessage` in both English and Chinese translation files for history panel
+- Added the missing key to `src/i18n/locales/en/history-panel.json` and `src/i18n/locales/zh/history-panel.json`
+- Verified application functionality using Playwright MCP browser automation
 
 ## Next Steps
-1. Complete remaining memory bank documentation files
-2. Document the current implementation status
-3. Identify any pending features or improvements
-4. Establish patterns for future development
+1. Continue monitoring for any other UI/UX issues
+2. Test actual image generation functionality when API key is configured
+3. Verify all deployment modes work correctly (local, Docker, Vercel)
+4. Consider adding unit tests for critical functionality
 
 ## Active Decisions and Considerations
 
@@ -113,9 +112,24 @@ The application is fully functional with all core features implemented:
 - ✅ Internationalization (English/Chinese)
 - ✅ Docker and Vercel deployment ready
 
+### Recent Bug Fixes
+- **Translation Key Issue**: Fixed missing `emptyMessage` key in history panel translations
+  - Component was looking for `emptyMessage` but translation files only had `empty`
+  - Added the missing key to both English and Chinese translation files
+  - Verified fix works in both languages
+
+### Testing Results with Playwright MCP
+- ✅ Application starts successfully on localhost:3000
+- ✅ Tab switching between Generate and Edit modes works correctly
+- ✅ Language switching between English and Chinese functions properly
+- ✅ UI components render without errors
+- ✅ Translation system loads all required namespaces
+- ✅ History panel displays correct empty state message after fix
+
 The codebase is production-ready but could benefit from:
 - Enhanced error handling and retry logic
 - Performance optimizations for large history
 - Additional language support
 - Advanced search and filtering for history
 - Batch processing capabilities
+- Automated testing suite for regression prevention
