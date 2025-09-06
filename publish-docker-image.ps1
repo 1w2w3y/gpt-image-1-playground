@@ -1,6 +1,6 @@
 # Define version components
 $MajorVersion = "0"
-$MinorVersion = "2"
+$MinorVersion = "3"
 
 # Create date-based tag (e.g., 1.6.20250217)
 $ImgVersionTag = "$MajorVersion.$MinorVersion.$((Get-Date -Format 'yyyyMMdd'))"
