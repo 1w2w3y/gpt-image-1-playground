@@ -1,7 +1,7 @@
 'use client';
 
 import { EditingForm, type EditingFormData } from '@/components/editing-form';
-import { GenerationForm, type GenerationFormData } from '@/components/generation-form';
+import { GenerationForm, type GenerationFormData, type ModelType } from '@/components/generation-form';
 import { HistoryPanel } from '@/components/history-panel';
 import { ImageOutput } from '@/components/image-output';
 import { PasswordDialog } from '@/components/password-dialog';
@@ -109,6 +109,7 @@ export default function HomePage() {
     const [genCompression, setGenCompression] = React.useState([100]);
     const [genBackground, setGenBackground] = React.useState<GenerationFormData['background']>('auto');
     const [genModeration, setGenModeration] = React.useState<GenerationFormData['moderation']>('low');
+    const [model, setModel] = React.useState<ModelType>('gpt-image-1.5');
 
     const getImageSrc = React.useCallback(
         (filename: string): string | undefined => {
@@ -320,6 +321,7 @@ export default function HomePage() {
             return;
         }
         apiFormData.append('mode', mode);
+        apiFormData.append('model', model);
 
         if (mode === 'generate') {
             const genData = formData as GenerationFormData;
@@ -722,6 +724,8 @@ export default function HomePage() {
                                 isPasswordRequiredByBackend={isPasswordRequiredByBackend}
                                 clientPasswordHash={clientPasswordHash}
                                 onOpenPasswordDialog={handleOpenPasswordDialog}
+                                model={model}
+                                setModel={setModel}
                                 prompt={genPrompt}
                                 setPrompt={setGenPrompt}
                                 n={genN}
@@ -749,6 +753,8 @@ export default function HomePage() {
                                 isPasswordRequiredByBackend={isPasswordRequiredByBackend}
                                 clientPasswordHash={clientPasswordHash}
                                 onOpenPasswordDialog={handleOpenPasswordDialog}
+                                model={model}
+                                setModel={setModel}
                                 imageFiles={editImageFiles}
                                 sourceImagePreviewUrls={editSourceImagePreviewUrls}
                                 setImageFiles={setEditImageFiles}

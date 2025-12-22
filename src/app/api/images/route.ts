@@ -108,7 +108,8 @@ export async function POST(request: NextRequest) {
         }
 
         let result: OpenAI.Images.ImagesResponse;
-        const model = 'gpt-image-1';
+        const modelFromRequest = formData.get('model') as string | null;
+        const model = modelFromRequest || 'gpt-image-1.5';
 
         if (mode === 'generate') {
             const n = parseInt((formData.get('n') as string) || '1', 10);

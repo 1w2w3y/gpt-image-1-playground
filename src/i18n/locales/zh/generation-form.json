@@ -1,7 +1,10 @@
 {
   "title": "生成图像",
-  "description": "使用 gpt-image-1 从文本提示创建新图像。",
+  "description": "从文本提示创建新图像。",
   "form": {
+    "model": {
+      "label": "模型"
+    },
     "prompt": {
       "label": "提示词",
       "placeholder": "例如：一只在太空中漂浮的逼真猫宇航员"

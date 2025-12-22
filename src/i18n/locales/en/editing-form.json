@@ -1,7 +1,10 @@
 {
   "title": "Edit Image",
-  "description": "Modify an image using gpt-image-1.",
+  "description": "Modify an image.",
   "form": {
+    "model": {
+      "label": "Model"
+    },
     "prompt": {
       "label": "Prompt",
       "placeholder": "e.g., Add a party hat to the main subject"

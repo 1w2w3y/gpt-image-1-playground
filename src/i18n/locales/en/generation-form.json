@@ -1,7 +1,10 @@
 {
   "title": "Generate Image",
-  "description": "Create a new image from a text prompt using gpt-image-1.",
+  "description": "Create a new image from a text prompt.",
   "form": {
+    "model": {
+      "label": "Model"
+    },
     "prompt": {
       "label": "Prompt",
       "placeholder": "e.g., A photorealistic cat astronaut floating in space"

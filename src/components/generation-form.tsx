@@ -22,12 +22,16 @@ import {
     Loader2,
     BrickWall,
     Lock,
-    LockOpen
+    LockOpen,
+    Bot
 } from 'lucide-react';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 
+export type ModelType = 'gpt-image-1' | 'gpt-image-1.5';
+
 export type GenerationFormData = {
+    model: ModelType;
     prompt: string;
     n: number;
     size: '1024x1024' | '1536x1024' | '1024x1536' | 'auto';
@@ -46,6 +50,8 @@ type GenerationFormProps = {
     isPasswordRequiredByBackend: boolean | null;
     clientPasswordHash: string | null;
     onOpenPasswordDialog: () => void;
+    model: ModelType;
+    setModel: React.Dispatch<React.SetStateAction<ModelType>>;
     prompt: string;
     setPrompt: React.Dispatch<React.SetStateAction<string>>;
     n: number[];
@@ -96,6 +102,8 @@ export function GenerationForm({
     isPasswordRequiredByBackend,
     clientPasswordHash,
     onOpenPasswordDialog,
+    model,
+    setModel,
     prompt,
     setPrompt,
     n,
@@ -119,6 +127,7 @@ export function GenerationForm({
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData: GenerationFormData = {
+            model,
             prompt,
             n: n[0],
             size,
@@ -158,6 +167,18 @@ export function GenerationForm({
             </CardHeader>
             <form onSubmit={handleSubmit} className='flex h-full flex-1 flex-col overflow-hidden'>
                 <CardContent className='flex-1 space-y-5 overflow-y-auto p-4'>
+                    <div className='space-y-3'>
+                        <Label className='block text-white'>{t('form.model.label')}</Label>
+                        <RadioGroup
+                            value={model}
+                            onValueChange={(value) => setModel(value as ModelType)}
+                            disabled={isLoading}
+                            className='flex flex-wrap gap-x-5 gap-y-3'>
+                            <RadioItemWithIcon value='gpt-image-1.5' id='model-gpt-image-1.5' label='gpt-image-1.5' Icon={Bot} />
+                            <RadioItemWithIcon value='gpt-image-1' id='model-gpt-image-1' label='gpt-image-1' Icon={Bot} />
+                        </RadioGroup>
+                    </div>
+
                     <div className='space-y-1.5'>
                         <Label htmlFor='prompt' className='text-white'>
                             {t('form.prompt.label')}

@@ -1,7 +1,10 @@
 {
   "title": "编辑图像",
-  "description": "使用 gpt-image-1 修改图像。",
+  "description": "修改图像。",
   "form": {
+    "model": {
+      "label": "模型"
+    },
     "prompt": {
       "label": "提示词",
       "placeholder": "例如：给主体添加一顶派对帽"

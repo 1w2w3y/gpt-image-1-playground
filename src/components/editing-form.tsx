@@ -24,11 +24,13 @@ import {
     ScanEye,
     UploadCloud,
     Lock,
-    LockOpen
+    LockOpen,
+    Bot
 } from 'lucide-react';
 import Image from 'next/image';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
+import { type ModelType } from './generation-form';
 
 type DrawnPoint = {
     x: number;
@@ -37,6 +39,7 @@ type DrawnPoint = {
 };
 
 export type EditingFormData = {
+    model: ModelType;
     prompt: string;
     n: number;
     size: '1024x1024' | '1536x1024' | '1024x1536' | 'auto';
@@ -53,6 +56,8 @@ type EditingFormProps = {
     isPasswordRequiredByBackend: boolean | null;
     clientPasswordHash: string | null;
     onOpenPasswordDialog: () => void;
+    model: ModelType;
+    setModel: React.Dispatch<React.SetStateAction<ModelType>>;
     imageFiles: File[];
     sourceImagePreviewUrls: string[];
     setImageFiles: React.Dispatch<React.SetStateAction<File[]>>;
@@ -114,6 +119,8 @@ export function EditingForm({
     isPasswordRequiredByBackend,
     clientPasswordHash,
     onOpenPasswordDialog,
+    model,
+    setModel,
     imageFiles,
     sourceImagePreviewUrls,
     setImageFiles,
@@ -441,6 +448,7 @@ export function EditingForm({
         }
 
         const formData: EditingFormData = {
+            model,
             prompt: editPrompt,
             n: editN[0],
             size: editSize,
@@ -480,6 +488,18 @@ export function EditingForm({
             </CardHeader>
             <form onSubmit={handleSubmit} className='flex h-full flex-1 flex-col overflow-hidden'>
                 <CardContent className='flex-1 space-y-5 overflow-y-auto p-4'>
+                    <div className='space-y-3'>
+                        <Label className='block text-white'>{t('form.model.label')}</Label>
+                        <RadioGroup
+                            value={model}
+                            onValueChange={(value) => setModel(value as ModelType)}
+                            disabled={isLoading}
+                            className='flex flex-wrap gap-x-5 gap-y-3'>
+                            <RadioItemWithIcon value='gpt-image-1.5' id='edit-model-gpt-image-1.5' label='gpt-image-1.5' Icon={Bot} />
+                            <RadioItemWithIcon value='gpt-image-1' id='edit-model-gpt-image-1' label='gpt-image-1' Icon={Bot} />
+                        </RadioGroup>
+                    </div>
+
                     <div className='space-y-1.5'>
                         <Label htmlFor='edit-prompt' className='text-white'>
                             {t('form.prompt.label')}
