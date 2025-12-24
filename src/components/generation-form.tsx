@@ -28,7 +28,7 @@ import {
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 
-export type ModelType = 'gpt-image-1' | 'gpt-image-1.5';
+export type ModelType = 'gpt-image-1' | 'gpt-image-1.5' | 'gpt-image-1-mini';
 
 export type GenerationFormData = {
     model: ModelType;
@@ -176,6 +176,7 @@ export function GenerationForm({
                             className='flex flex-wrap gap-x-5 gap-y-3'>
                             <RadioItemWithIcon value='gpt-image-1.5' id='model-gpt-image-1.5' label='gpt-image-1.5' Icon={Bot} />
                             <RadioItemWithIcon value='gpt-image-1' id='model-gpt-image-1' label='gpt-image-1' Icon={Bot} />
+                            <RadioItemWithIcon value='gpt-image-1-mini' id='model-gpt-image-1-mini' label='gpt-image-1-mini' Icon={Bot} />
                         </RadioGroup>
                     </div>
 
