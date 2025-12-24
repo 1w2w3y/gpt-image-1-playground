@@ -109,7 +109,7 @@ export default function HomePage() {
     const [genCompression, setGenCompression] = React.useState([100]);
     const [genBackground, setGenBackground] = React.useState<GenerationFormData['background']>('auto');
     const [genModeration, setGenModeration] = React.useState<GenerationFormData['moderation']>('low');
-    const [model, setModel] = React.useState<ModelType>('gpt-image-1-mini');
+    const [model, setModel] = React.useState<ModelType>('gpt-image-1.5');
 
     const getImageSrc = React.useCallback(
         (filename: string): string | undefined => {

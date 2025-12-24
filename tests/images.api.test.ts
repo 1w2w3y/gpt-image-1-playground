@@ -176,7 +176,7 @@ describe('/api/images', () => {
             expect(data.usage).toBeDefined();
             
             expect(mockOpenAI.images.generate).toHaveBeenCalledWith({
-                model: 'gpt-image-1-mini',
+                model: 'gpt-image-1.5',
                 prompt: 'A beautiful sunset',
                 n: 1,
                 size: '1024x1024',
@@ -208,7 +208,7 @@ describe('/api/images', () => {
             const response = await POST(request);
 
             expect(mockOpenAI.images.generate).toHaveBeenCalledWith({
-                model: 'gpt-image-1-mini',
+                model: 'gpt-image-1.5',
                 prompt: 'A detailed landscape',
                 n: 3,
                 size: '1536x1024',
