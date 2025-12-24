@@ -497,7 +497,7 @@ export function EditingForm({
                             className='flex flex-wrap gap-x-5 gap-y-3'>
                             <RadioItemWithIcon value='gpt-image-1.5' id='edit-model-gpt-image-1.5' label='gpt-image-1.5' Icon={Bot} />
                             <RadioItemWithIcon value='gpt-image-1' id='edit-model-gpt-image-1' label='gpt-image-1' Icon={Bot} />
-                            <RadioItemWithIcon value='gpt-image-1-mini' id='edit-model-gpt-image-1-mini' label='gpt-image-1-mini' Icon={Bot} />
+                            <RadioItemWithIcon value='gpt-image-1-mini' id='edit-model-gpt-image-1-mini' label={t('form.model.options.mini')} Icon={Bot} />
                         </RadioGroup>
                     </div>
 

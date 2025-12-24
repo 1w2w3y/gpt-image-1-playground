@@ -3,7 +3,10 @@
   "description": "Modify an image.",
   "form": {
     "model": {
-      "label": "Model"
+      "label": "Model",
+      "options": {
+        "mini": "gpt-image-1-mini (fast)"
+      }
     },
     "prompt": {
       "label": "Prompt",

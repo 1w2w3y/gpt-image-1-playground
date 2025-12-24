@@ -3,7 +3,10 @@
   "description": "修改图像。",
   "form": {
     "model": {
-      "label": "模型"
+      "label": "模型",
+      "options": {
+        "mini": "gpt-image-1-mini (快)"
+      }
     },
     "prompt": {
       "label": "提示词",
