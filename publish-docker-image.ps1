@@ -82,7 +82,7 @@ Write-Host "- $FullImageNameVersioned"
 Write-Host "- $FullImageNameLatest"
 
 # Print the command to run the container
-$RunCommand = "docker run --name gpt-image-1-playground -p 3366:3366 -e OPENAI_API_KEY=your-openai-api-key -e OPENAI_API_BASE_URL=https://litellm.wus2.sample-dev.azgrafana-test.io $FullImageNameVersioned"
+$RunCommand = "docker run --name gpt-image-1-playground -p 3366:3366 -e OPENAI_API_KEY=your-openai-api-key -e OPENAI_API_BASE_URL=https://litellm-img.wus2.sample-dev.azgrafana-test.io $FullImageNameVersioned"
 Write-Host ""
 Write-Host "Command to run the container:"
 Write-Host $RunCommand
