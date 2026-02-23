@@ -16,16 +16,22 @@ vi.mock('fs/promises', () => ({
     mkdir: mockMkdir
 }));
 
-// Mock OpenAI - use vi.hoisted to properly declare mocks
-const mockOpenAI = vi.hoisted(() => ({
-    images: {
-        generate: vi.fn(),
-        edit: vi.fn()
-    }
+// Mock the image API client - use vi.hoisted to properly declare mocks
+const mockImageClient = vi.hoisted(() => ({
+    generate: vi.fn(),
+    edit: vi.fn()
 }));
 
+vi.mock('../src/lib/image-api-client', () => ({
+    createImageApiClient: vi.fn().mockReturnValue(mockImageClient),
+    getImageApiMode: vi.fn().mockReturnValue('openai'),
+}));
+
+// Still mock openai to prevent actual imports
 vi.mock('openai', () => ({
-    default: vi.fn().mockImplementation(() => mockOpenAI)
+    default: vi.fn().mockImplementation(() => ({
+        images: { generate: vi.fn(), edit: vi.fn() }
+    }))
 }));
 
 import { POST } from '../src/app/api/images/route';
@@ -48,9 +54,9 @@ describe('/api/images', () => {
         mockWriteFile.mockResolvedValue(undefined);
         mockMkdir.mockResolvedValue(undefined);
         
-        // Reset OpenAI mocks to default successful responses
-        mockOpenAI.images.generate.mockResolvedValue(mockOpenAIResponse);
-        mockOpenAI.images.edit.mockResolvedValue(mockOpenAIResponse);
+        // Reset image client mocks to default successful responses
+        mockImageClient.generate.mockResolvedValue(mockOpenAIResponse);
+        mockImageClient.edit.mockResolvedValue(mockOpenAIResponse);
     });
 
     afterEach(() => {
@@ -175,7 +181,7 @@ describe('/api/images', () => {
             });
             expect(data.usage).toBeDefined();
             
-            expect(mockOpenAI.images.generate).toHaveBeenCalledWith({
+            expect(mockImageClient.generate).toHaveBeenCalledWith({
                 model: 'gpt-image-1.5',
                 prompt: 'A beautiful sunset',
                 n: 1,
@@ -207,7 +213,7 @@ describe('/api/images', () => {
             
             const response = await POST(request);
 
-            expect(mockOpenAI.images.generate).toHaveBeenCalledWith({
+            expect(mockImageClient.generate).toHaveBeenCalledWith({
                 model: 'gpt-image-1.5',
                 prompt: 'A detailed landscape',
                 n: 3,
@@ -234,7 +240,7 @@ describe('/api/images', () => {
             
             await POST(request);
 
-            expect(mockOpenAI.images.generate).toHaveBeenCalledWith(
+            expect(mockImageClient.generate).toHaveBeenCalledWith(
                 expect.objectContaining({ n: 10 })
             );
         });
@@ -385,7 +391,7 @@ describe('/api/images', () => {
         });
 
         it('should handle OpenAI API errors', async () => {
-            mockOpenAI.images.generate.mockRejectedValueOnce(
+            mockImageClient.generate.mockRejectedValueOnce(
                 new Error('OpenAI API error')
             );
             
@@ -407,7 +413,7 @@ describe('/api/images', () => {
         });
 
         it('should handle invalid OpenAI response', async () => {
-            mockOpenAI.images.generate.mockResolvedValueOnce({
+            mockImageClient.generate.mockResolvedValueOnce({
                 data: []
             });
             
@@ -451,7 +457,7 @@ describe('/api/images', () => {
         });
 
         it('should handle missing b64_json in response', async () => {
-            mockOpenAI.images.generate.mockResolvedValueOnce({
+            mockImageClient.generate.mockResolvedValueOnce({
                 data: [{ url: 'http://example.com/image.png' }], // Missing b64_json
                 usage: { prompt_tokens: 10, total_tokens: 10 }
             });
@@ -523,7 +529,7 @@ describe('/api/images', () => {
             
             await POST(request);
 
-            expect(mockOpenAI.images.generate).toHaveBeenCalledWith(
+            expect(mockImageClient.generate).toHaveBeenCalledWith(
                 expect.objectContaining({
                     output_compression: 75
                 })
@@ -545,7 +551,7 @@ describe('/api/images', () => {
             
             await POST(request);
 
-            expect(mockOpenAI.images.generate).toHaveBeenCalledWith(
+            expect(mockImageClient.generate).toHaveBeenCalledWith(
                 expect.not.objectContaining({
                     output_compression: expect.anything()
                 })

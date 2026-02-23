@@ -1,13 +1,10 @@
 import crypto from 'crypto';
 import fs from 'fs/promises';
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
 import path from 'path';
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-    baseURL: process.env.OPENAI_API_BASE_URL
-});
+import { createImageApiClient, getImageApiMode } from '@/lib/image-api-client';
+import type { ImageGenerateParams, ImageEditParams, ImagesResponse } from '@/lib/image-api-client';
 
 const outputDir = path.resolve(process.cwd(), 'generated-images');
 
@@ -57,11 +54,13 @@ function sha256(data: string): string {
 export async function POST(request: NextRequest) {
     console.log('Received POST request to /api/images');
 
-    if (!process.env.OPENAI_API_KEY) {
+    const apiMode = getImageApiMode();
+    if (apiMode === 'openai' && !process.env.OPENAI_API_KEY) {
         console.error('OPENAI_API_KEY is not set.');
         return NextResponse.json({ error: 'Server configuration error: API key not found.' }, { status: 500 });
     }
     try {
+        const imageClient = createImageApiClient(apiMode);
         let effectiveStorageMode: 'fs' | 'indexeddb';
         const explicitMode = process.env.NEXT_PUBLIC_IMAGE_STORAGE_MODE;
         const isOnVercel = process.env.VERCEL === '1';
@@ -107,23 +106,20 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Missing required parameters: mode and prompt' }, { status: 400 });
         }
 
-        let result: OpenAI.Images.ImagesResponse;
+        let result: ImagesResponse;
         const modelFromRequest = formData.get('model') as string | null;
         const model = modelFromRequest || 'gpt-image-1.5';
 
         if (mode === 'generate') {
             const n = parseInt((formData.get('n') as string) || '1', 10);
-            const size = (formData.get('size') as OpenAI.Images.ImageGenerateParams['size']) || '1024x1024';
-            const quality = (formData.get('quality') as OpenAI.Images.ImageGenerateParams['quality']) || 'auto';
-            const output_format =
-                (formData.get('output_format') as OpenAI.Images.ImageGenerateParams['output_format']) || 'png';
+            const size = (formData.get('size') as string) || '1024x1024';
+            const quality = (formData.get('quality') as string) || 'auto';
+            const output_format = (formData.get('output_format') as string) || 'png';
             const output_compression_str = formData.get('output_compression') as string | null;
-            const background =
-                (formData.get('background') as OpenAI.Images.ImageGenerateParams['background']) || 'auto';
-            const moderation =
-                (formData.get('moderation') as OpenAI.Images.ImageGenerateParams['moderation']) || 'auto';
+            const background = (formData.get('background') as string) || 'auto';
+            const moderation = (formData.get('moderation') as string) || 'auto';
 
-            const params: OpenAI.Images.ImageGenerateParams = {
+            const params: ImageGenerateParams = {
                 model,
                 prompt,
                 n: Math.max(1, Math.min(n || 1, 10)),
@@ -141,12 +137,12 @@ export async function POST(request: NextRequest) {
                 }
             }
 
-            console.log('Calling OpenAI generate with params:', params);
-            result = await openai.images.generate(params);
+            console.log('Calling image API generate with params:', params);
+            result = await imageClient.generate(params);
         } else if (mode === 'edit') {
             const n = parseInt((formData.get('n') as string) || '1', 10);
-            const size = (formData.get('size') as OpenAI.Images.ImageEditParams['size']) || 'auto';
-            const quality = (formData.get('quality') as OpenAI.Images.ImageEditParams['quality']) || 'auto';
+            const size = (formData.get('size') as string) || 'auto';
+            const quality = (formData.get('quality') as string) || 'auto';
 
             const imageFiles: File[] = [];
             for (const [key, value] of formData.entries()) {
@@ -166,7 +162,7 @@ export async function POST(request: NextRequest) {
             // This aligns with the current UI behavior where users edit one image at a time
             const primaryImage = imageFiles[0];
 
-            const params: OpenAI.Images.ImageEditParams = {
+            const params: ImageEditParams = {
                 model,
                 prompt,
                 image: primaryImage,
@@ -179,17 +175,17 @@ export async function POST(request: NextRequest) {
                 params.mask = maskFile;
             }
 
-            console.log('Calling OpenAI edit with params:', {
+            console.log('Calling image API edit with params:', {
                 ...params,
                 image: primaryImage.name,
                 mask: maskFile ? maskFile.name : 'N/A'
             });
-            result = await openai.images.edit(params);
+            result = await imageClient.edit(params);
         } else {
             return NextResponse.json({ error: 'Invalid mode specified' }, { status: 400 });
         }
 
-        console.log('OpenAI API call successful.');
+        console.log('Image API call successful.');
 
         if (!result || !Array.isArray(result.data) || result.data.length === 0) {
             console.error('Invalid or empty data received from OpenAI API:', result);
